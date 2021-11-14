@@ -5,6 +5,7 @@ interface UseGameOfLifeProps {
   row: number,
   col: number,
   initialValues?: CellType[][],
+  setActiveCell: (n: number) => void,
 };
 
 interface UseGameOfLifeDataReturned { 
@@ -20,7 +21,7 @@ const calcIndex = (n: number, m: number) => {
   return ((n % m) + m) % m;
 }
 
-const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues }) => {
+const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues, setActiveCell }) => {
   const [grid, setGrid] = useState<CellType[][]>()
 
   // Set Empty Grid
@@ -61,10 +62,13 @@ const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues }) => {
 
   // Game start!
   const gameOfLifeLogicStart = useCallback((grid?: CellType[][]) => {
+    let activeCellCount = 0;
     if(grid) {
       const newGrid = grid.map((row) => 
         row.map((cell: any) => {
           const neighbors = countNeighborsCell(cell, grid);
+          // count ActiveCell
+          if (cell.value) activeCellCount++;
           // logic for active or disactive cell
           if (cell.value && neighbors < 2) {
             return ({ ...cell, value: false });
@@ -80,6 +84,7 @@ const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues }) => {
       );
       
       setGrid(newGrid);
+      setActiveCell(activeCellCount);
     }
   }, [countNeighborsCell])
 

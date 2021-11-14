@@ -15,10 +15,12 @@ interface GameOfLifeProps {
   col: number,
   initialValues?: CellType[][],
   initialTime: number,
+  activeCell: number,
+  setActiveCell: (n: number) => void
 };
 
-const GameOfLife = ({ row, col, initialValues, initialTime }: GameOfLifeProps) => {
-  const { gameOfLifeLogicStart, grid, setGrid, setInitialGrid } = useGameOfLife({ row, col, initialValues });
+const GameOfLife = ({ row, col, initialValues, initialTime, activeCell, setActiveCell }: GameOfLifeProps) => {
+  const { gameOfLifeLogicStart, grid, setGrid, setInitialGrid } = useGameOfLife({ row, col, initialValues, setActiveCell });
   const stepGame = useCallback(() => gameOfLifeLogicStart(grid), [gameOfLifeLogicStart, grid]);
   const { time, resetTimer, setStateTimer, stateTimer } = useTimer({ 
     callback: stepGame,
@@ -37,13 +39,19 @@ const GameOfLife = ({ row, col, initialValues, initialTime }: GameOfLifeProps) =
 
   return (
     <>
-      <Grid grid={grid} setGrid={setGrid} />
+      <Grid 
+        grid={grid}
+        setGrid={setGrid}
+        activeCell={activeCell}
+        setActiveCell={setActiveCell}
+      />
 
-      <FooterControll 
+      <FooterControll
         time={time} 
         setStateTimer={setStateTimer} 
         stateTimer={stateTimer} 
-        resetter={resetter} 
+        resetter={resetter}
+        activeCell={activeCell}
       />
     </>  
   );

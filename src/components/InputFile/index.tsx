@@ -1,12 +1,12 @@
 import { CellType } from '../../containers/GameOfLife';
 
 interface InputFileProps { 
-  setTime: (t: number) => void
+  setActiveCell: (n: number) => void
   setGridSize: (s: {row: number, col: number}) => void
   setInitialValues: (v: CellType[][]) => void
 };
 
-const InputFile = ({setTime, setGridSize, setInitialValues}: InputFileProps) => {
+const InputFile = ({setActiveCell, setGridSize, setInitialValues}: InputFileProps) => {
   const handleChange = (e: any) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -19,8 +19,8 @@ const InputFile = ({setTime, setGridSize, setInitialValues}: InputFileProps) => 
       allLines.forEach((line: string, index: number) => {
 
         if (index === 0) {
-          const time = Number(line.match(/\d+/g));
-          setTime(time);
+          const activeCell = Number(line.match(/\d+/g));
+          setActiveCell(activeCell);
         } else if (index === 1) {
           const splitLine = line.split(" ");
           const row = Number(splitLine[0]);

@@ -5,7 +5,7 @@ import { CellType } from '../../containers/GameOfLife';
 import { Label, SwitchLabel, SwitchWrap, Wrap } from './styles';
 
 interface SwitchFormProps { 
-  setTime: (t: number) => void
+  setActiveCell: (n: number) => void
   setGridSize: (s: {row?: number, col?: number}) => void
   setInitialValues: (v: CellType[][]) => void
   size: {row?: number, col?: number},
@@ -13,7 +13,7 @@ interface SwitchFormProps {
 };
 
 function SwitchForm({
-  setTime,
+  setActiveCell,
   setGridSize,
   setInitialValues,
   size,
@@ -49,7 +49,7 @@ function SwitchForm({
       </SwitchWrap>
       {mode === 'file' &&
         <InputFile  
-          setTime={setTime}
+          setActiveCell={setActiveCell}
           setGridSize={setGridSize}
           setInitialValues={setInitialValues}
         />

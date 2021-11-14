@@ -6,6 +6,7 @@ function App() {
   const [time, setTime] = useState<number>();
   const [size, setGridSize] = useState<{row?: number, col?: number}>({});
   const [initialValues, setInitialValues] = useState<CellType[][]>();
+  const [activeCell, setActiveCell] = useState<number>(0)
 
   const reset = useCallback(() => {
     setTime(undefined);
@@ -16,7 +17,7 @@ function App() {
   return (
     <div>
       <SwitchForm
-        setTime={setTime}
+        setActiveCell={setActiveCell}
         setGridSize={setGridSize}
         setInitialValues={setInitialValues}
         size={size}
@@ -27,7 +28,9 @@ function App() {
           row={size?.row}
           col={size?.col}
           initialValues={initialValues}
-          initialTime={time || 0} 
+          initialTime={time || 0}
+          activeCell={activeCell}
+          setActiveCell={setActiveCell}
         />
       }
     </div>

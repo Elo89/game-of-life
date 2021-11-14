@@ -8,13 +8,16 @@ interface CellProps {
   grid: CellType[][],
   setGrid: (g: CellType[][]) => void,
   value: boolean,
+  activeCell: number
+  setActiveCell: (n: number) => void
 };
 
-function Cell({ indexCol, indexRow, grid, setGrid, value }: CellProps) {
+function Cell({ indexCol, indexRow, grid, setGrid, value, setActiveCell, activeCell }: CellProps) {
   const handleClick = useCallback(() => {
     const newGrid = [...grid]
     newGrid[indexRow][indexCol].value = !newGrid[indexRow][indexCol].value;
     setGrid(newGrid);
+    setActiveCell(activeCell + 1);
   }, [setGrid, grid, indexRow, indexCol])
 
   return (

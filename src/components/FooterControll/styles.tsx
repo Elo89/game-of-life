@@ -19,7 +19,7 @@ export const Button = styled.button<ButtonProps>`
   margin-bottom: 10px;
 `;
 
-export const Timer = styled.div`
+export const Label = styled.div`
   margin: 10px;
   font-weight: bold;
 `;

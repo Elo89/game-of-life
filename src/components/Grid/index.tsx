@@ -5,9 +5,11 @@ import { GridWrap, Row } from './styles';
 interface GridProps { 
   grid?: CellType[][], 
   setGrid: (v: CellType[][]) => void
+  activeCell: number
+  setActiveCell: (n: number) => void
 };
 
-function Grid({ grid, setGrid }: GridProps) {
+function Grid({ grid, setGrid, activeCell, setActiveCell }: GridProps) {
   return (
     <GridWrap>
       {grid?.map((row, indexRow) => (
@@ -20,6 +22,8 @@ function Grid({ grid, setGrid }: GridProps) {
               indexCol={indexCol}
               setGrid={setGrid}
               grid={grid}
+              setActiveCell={setActiveCell}
+              activeCell={activeCell}
             />
           ))}
         </Row>

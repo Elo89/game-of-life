@@ -16,7 +16,7 @@ generation)
 ## Implementation
 The initial state (the current generation) will be provided via a text file
 that specifies*
-- the current generation numbe
+- the current generation number
 - the grid size
 - the population state (* represents a live cell, represents a dead cell)
 
