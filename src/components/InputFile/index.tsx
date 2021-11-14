@@ -22,8 +22,9 @@ const InputFile = ({setTime, setGridSize, setInitialValues}: InputFileProps) => 
           const time = Number(line.match(/\d+/g));
           setTime(time);
         } else if (index === 1) {
-          const row = Number(line.split("/")[0]);
-          const col = Number(line.split("/")[1]);
+          const splitLine = line.split(" ");
+          const row = Number(splitLine[0]);
+          const col = Number(splitLine[1]);
           setGridSize({ row, col });
         } else if (index > 1 && line.length) {
           const row = line.split("").map((value, col) => {
