@@ -11,15 +11,19 @@ export interface CellType {
 };
 
 interface GameOfLifeProps { 
-  dimension: number,
+  row: number,
+  col: number,
+  initialValues?: CellType[][],
+  initialTime: number,
 };
 
-const GameOfLife = ({ dimension }: GameOfLifeProps) => {
-  const { gameOfLifeLogicStart, grid, setGrid, setInitialGrid } = useGameOfLife({ dimension });
+const GameOfLife = ({ row, col, initialValues, initialTime }: GameOfLifeProps) => {
+  const { gameOfLifeLogicStart, grid, setGrid, setInitialGrid } = useGameOfLife({ row, col, initialValues });
   const stepGame = useCallback(() => gameOfLifeLogicStart(grid), [gameOfLifeLogicStart, grid]);
   const { time, resetTimer, setStateTimer, stateTimer } = useTimer({ 
     callback: stepGame,
     interval: 1000,
+    initialTime,
   })
 
   useEffect(() => {

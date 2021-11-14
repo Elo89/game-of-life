@@ -4,6 +4,7 @@ import useInterval from './useInterval';
 interface UseTimerProps { 
   callback: () => void,
   interval: number,
+  initialTime: number,
 };
 
 interface UseTimerDataReturned {
@@ -16,8 +17,8 @@ interface UseTimerDataReturned {
 type UseTimerType = ({ callback, interval }: UseTimerProps) => UseTimerDataReturned;
 
 // hook Timer
-const useTimer: UseTimerType = ({ callback, interval }) => {
-  const [time, setTime] = useState<number>(0)
+const useTimer: UseTimerType = ({ callback, interval, initialTime = 0 }) => {
+  const [time, setTime] = useState<number>(initialTime)
   const [stateTimer, setStateTimer] = useState<boolean>(false)
 
   useInterval(() => {
