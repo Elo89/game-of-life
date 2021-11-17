@@ -18,7 +18,7 @@ function Cell({ indexCol, indexRow, grid, setGrid, value, setActiveCell, activeC
     newGrid[indexRow][indexCol].value = !newGrid[indexRow][indexCol].value;
     setGrid(newGrid);
     setActiveCell(activeCell + 1);
-  }, [setGrid, grid, indexRow, indexCol])
+  }, [setGrid, grid, indexRow, indexCol, setActiveCell, activeCell])
 
   return (
     <CellWrap 

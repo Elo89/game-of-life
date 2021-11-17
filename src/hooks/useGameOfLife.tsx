@@ -17,8 +17,12 @@ interface UseGameOfLifeDataReturned {
 
 type UseGameOfLifeType = ({ row, col }: UseGameOfLifeProps) => UseGameOfLifeDataReturned;
 
-const calcIndex = (n: number, m: number) => {
-  return ((n % m) + m) % m;
+const calcIndex = (index: number, row: number) => {
+  // repliacate infinite grid quando arriva a fine griglia appare dalla parte opposta
+  return ((index % row) + row) % row;
+  // finite grid si blocca ma con alcuni problemi...
+  // if (index && index <= row) return index;
+  // return null;
 }
 
 const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues, setActiveCell }) => {
@@ -35,16 +39,27 @@ const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues, setActiveCe
       setGrid(matrix);
   }, [row, col, setGrid, initialValues])
 
+  const getCell = useCallback(({ col, row, grid }) => {
+    if(row >= 0 && col >= 0)
+      return grid[row]?.[col]?.value
+    return null
+  }, [])
+
   // Count the neighbors active cells
   const countNeighborsCell = useCallback((cell: CellType, grid: CellType[][]) => {
-    const right = grid[calcIndex(cell.indexRow + 1, row)][cell.indexCol]?.value;
-    const left = grid[calcIndex(cell.indexRow - 1, row)][cell.indexCol]?.value;
-    const down = grid[cell.indexRow][calcIndex(cell.indexCol + 1, col)]?.value;
-    const up = grid[cell.indexRow][calcIndex(cell.indexCol - 1, col)]?.value;
-    const upLeft = grid[calcIndex(cell.indexRow - 1, row)][calcIndex(cell.indexCol - 1, col)]?.value;
-    const upRight = grid[calcIndex(cell.indexRow - 1, row)][calcIndex(cell.indexCol + 1, col)]?.value;
-    const downLeft = grid[calcIndex(cell.indexRow + 1, row)][calcIndex(cell.indexCol - 1, col)]?.value;
-    const downRight = grid[calcIndex(cell.indexRow + 1, row)][calcIndex(cell.indexCol + 1, col)]?.value;
+    const rowPrev = calcIndex(cell.indexRow - 1, row);
+    const rowNext = calcIndex(cell.indexRow + 1, row);
+    const colPrev = calcIndex(cell.indexCol - 1, col);
+    const colNext = calcIndex(cell.indexCol + 1, col);
+
+    const right = getCell({ row: rowNext, col: cell.indexCol, grid });
+    const left = getCell({ row: rowPrev, col: cell.indexCol, grid });
+    const down = getCell({ row: cell.indexRow, col: colNext, grid });
+    const up = getCell({ row: cell.indexRow, col: colPrev, grid });
+    const upLeft = getCell({ row: rowPrev, col: colPrev, grid });
+    const upRight = getCell({ row: rowPrev, col: colNext, grid });
+    const downLeft = getCell({ row: rowNext, col: colPrev, grid });
+    const downRight = getCell({ row: rowNext, col: colNext, grid });
     
     const countNeighbors = [
       right,
@@ -58,7 +73,7 @@ const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues, setActiveCe
     ].filter(x => !!x).length;
 
     return countNeighbors;
-  }, [row, col])
+  }, [row, col, getCell])
 
   // Game start!
   const gameOfLifeLogicStart = useCallback((grid?: CellType[][]) => {
@@ -86,7 +101,7 @@ const useGameOfLife: UseGameOfLifeType = ({ row, col, initialValues, setActiveCe
       setGrid(newGrid);
       setActiveCell(activeCellCount);
     }
-  }, [countNeighborsCell])
+  }, [countNeighborsCell, setActiveCell])
 
   return { 
     gameOfLifeLogicStart,
